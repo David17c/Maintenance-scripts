@@ -1,1 +1,1 @@
-Simple Bash script i use to clean and update my Debian system. This script also works on other distrobutions based on Debian.
+Simple Bash script i use to clean and update my Debian system
