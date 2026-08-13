@@ -4,15 +4,8 @@ set -Eeuo pipefail
 
 trap 'echo "Error: command failed on line $LINENO." >&2' ERR
 
-# Must be run as root
 if [[ $EUID -ne 0 ]]; then
     echo "Please run this script as root." >&2
-    exit 1
-fi
-
-# Check network/DNS
-if ! getent hosts deb.debian.org >/dev/null 2>&1; then
-    echo "Warning: Cannot resolve deb.debian.org. Network may be down." >&2
     exit 1
 fi
 
