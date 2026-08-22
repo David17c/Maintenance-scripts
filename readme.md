@@ -1,1 +1,1 @@
-Simple Bash script i use to clean and update my linux systems
+Simple scripts for system maintenance
