@@ -1,4 +1,4 @@
-# Ensure Script is being run with admini priviliges
+# Ensure Script is being run with admin priviliges
 $currentIdentity = [Security.Principal.WindowsIdentity]::GetCurrent()
 $principal = New-Object Security.Principal.WindowsPrincipal($currentIdentity)
 
