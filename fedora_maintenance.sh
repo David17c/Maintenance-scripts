@@ -49,7 +49,7 @@ if command -v podman >/dev/null 2>&1; then
     podman system prune --force --filter "until=$(date -u -d '30 days ago' '+%Y-%m-%dT%H:%M:%SZ')"
 fi
 
-# Remove journal logs until they are less 200 MiB and 14 days old
+# Remove journal logs until they are less 200 MiB and 30 days old
 journalctl --vacuum-size=200M
 journalctl --vacuum-time=14d
 
@@ -59,7 +59,7 @@ find /tmp -xdev -type f -mtime +30 -delete
 for home in /home/* /root; do
     [[ -d "$home" ]] || continue
 
-    # Empty everything in the trash older then 30 days
+    # Remove everything in trash older then 30 days
     trash="$home/.local/share/Trash"
     if [[ -d "$trash/files" ]]; then
         find "$trash/files" -mindepth 1 -maxdepth 1 -mtime +30 -exec rm -rf -- {} +
@@ -85,14 +85,15 @@ diff_mb=$(((after_space - before_space) / 1024))
 echo "-----------------------------------------------------"
 
 if (( diff_mb > 0 )); then
-    echo "Success: Freed approximately ${diff_mb} MB."
+    echo "Success: Freed about ${diff_mb} MB."
 elif (( diff_mb < 0 )); then
-    echo "Disk usage increased by approximately $((-diff_mb)) MB."
+    echo "Disk usage increased by about $((-diff_mb)) MB."
 else
     echo "No significant disk space change."
 fi
 
 # Show if a reboot is needed
-if "${DNF[@]}" needs-restarting -r >/dev/null 2>&1; then
-    echo "NOTE: System reboot is required."
+if command -v needs-restarting >/dev/null 2>&1 &&
+   needs-restarting -r >/dev/null 2>&1; then
+    echo "NOTE: System reboot is required"
 fi

@@ -4,6 +4,7 @@ set -Eeuo pipefail
 
 trap 'echo "Error: command failed on line $LINENO." >&2' ERR
 
+# Check if run as root
 if [[ $EUID -ne 0 ]]; then
     echo "Please run this script as root." >&2
     exit 1
@@ -67,15 +68,15 @@ diff_mb=$(((after_space - before_space) / 1024))
 echo "-----------------------------------------------------"
 
 if (( diff_mb > 0 )); then
-    echo "Success: Freed approximately ${diff_mb} MB."
+    echo "Success: Freed about ${diff_mb} MB."
 elif (( diff_mb < 0 )); then
-    echo "Disk usage increased by approximately $((-diff_mb)) MB."
+    echo "Disk usage increased by about $((-diff_mb)) MB."
 else
     echo "No significant disk space change."
 fi
 
 if [[ -f /var/run/reboot-required ]]; then
-    echo "NOTE: System reboot is required."
+    echo "NOTE: System reboot is required"
 fi
 
 exit 0
